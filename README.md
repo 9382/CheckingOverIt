@@ -6,6 +6,7 @@ Client mod for the Archipelago multiworld randomizer.
 
 ### Bugs
 - Gravity doesn't update correctly after reaching the top
+- items don't get collected on connecting
 - Fix multiple got over its being skippable by other slots collecting their items
   - idea: datastorage
   - idea: new playerprefs key
