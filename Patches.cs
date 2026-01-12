@@ -381,7 +381,7 @@ public class LoaderPatch {
     [HarmonyPostfix]
     private static void StartPostfix(Loader __instance, ref bool ___canContinue) {
         // only thing to change is condition of whether a bool is true
-        // This is for patching the save file being unnique to the multiworld and slot
+        // This is for patching the save file being unique to the multiworld and slot
         ___canContinue = PatchesHandler.GetSaveGame0().Length + PatchesHandler.GetSaveGame1().Length > 0;
     }
 
@@ -389,7 +389,7 @@ public class LoaderPatch {
     [HarmonyPrefix]
     private static bool StartGamePrefix(Loader __instance, ref bool ___safeToClick, ref int ___menuItemClicked) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to the multiworld and slot
+        // This is for patching the save file being unique to the multiworld and slot
         if (!___safeToClick) return false;
         TextMeshProUGUI[] componentsInChildren = __instance.menu.GetComponentsInChildren<TextMeshProUGUI>();
         for (int i = 0; i < componentsInChildren.Length; i++) {
@@ -409,7 +409,7 @@ public class PlayerControlPatch {
     [HarmonyPrefix]
     private static bool UpdatePrefix(PlayerControl __instance, ref int ___numWins) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to the multiworld and slot
+        // This is for patching the save file being unique to the multiworld and slot
         if (___numWins > 0 && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKey(KeyCode.R)) {
             PatchesHandler.DeleteAllAndSave();
             SceneManager.LoadScene("Mian");
@@ -446,7 +446,7 @@ public class SaviourPatch {
         ref bool ___willPlayAnimation
     ) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to the multiworld and slot
+        // This is for patching the save file being unique to the multiworld and slot
         __instance.canReset = true;
 		___savesSinceWrite = 20;
 		___stillHingeMotor = __instance.hinge.motor;
@@ -492,7 +492,7 @@ public class SaviourPatch {
         ref SaveState[] ___debugSaves, ref XmlSerializer ___serializer, ref int ___saveNum, ref string ___saveString
     ) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to each multiworld and slot
+        // This is for patching the save file being unique to each multiworld and slot
 		___stream = new MemoryStream();
         ___streamWriter = new StreamWriter(___stream, Encoding.UTF8);
 		if (___stream == null) return false;
@@ -518,7 +518,7 @@ public class SaviourPatch {
         Saviour __instance, ref bool ___willPlayAnimation, ref int ___frame, ref int ___savesSinceWrite, ref int ___savesPerWrite
     ) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to each multiworld and slot
+        // This is for patching the save file being unique to each multiworld and slot
 		if (___willPlayAnimation) {
 			__instance.pc.PlayOpeningAnimation();
             ___willPlayAnimation = false;
@@ -549,7 +549,7 @@ public class SaviourPatch {
     [HarmonyPrefix]
     private static bool LoadNewestSavePrefix(Saviour __instance, ref bool __result, ref XmlSerializer ___serializer, ref int ___saveNum) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to each multiworld and slot
+        // This is for patching the save file being unique to each multiworld and slot
 		__instance.pc.loadedFromSave = true;
 		string @string = PatchesHandler.GetSaveGame0();
 		string string2 = PatchesHandler.GetSaveGame1();
@@ -624,7 +624,7 @@ public class ScrollerPatch {
     [HarmonyPrefix]
     private static bool QuitToTitlePrefix(Scroller __instance, ref AudioSource ___aud) {
         // This is a replacement for the original function, so always return false
-        // This is for patching the save file being unnique to each multiworld and slot
+        // This is for patching the save file being unique to each multiworld and slot
 		___aud.Stop();
 		if (SceneManager.GetActiveScene().name == "Mian") {
             PatchesHandler.DeleteAll();
