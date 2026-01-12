@@ -143,7 +143,7 @@ public static class GravityControlPatch {
                 InSpace ? 0 : -50 + (10 * ConnectionHandler.GravityReductions)
             );
         }
-        if (ConfigHandler.PrintGravity.Value) PatchesHandler.Logger?.LogInfo("Gravity update: " + Physics2D.gravity.ToString());
+        if (ConfigHandler.PrintGravity.Value) PatchesHandler.Logger?.LogInfo("Gravity update: " + Physics2D.gravity.ToString() + " creditsUp: " + creditsUp + " InSpace: " + InSpace);
     }
 
     public static void HandleCompletion(GravityControl instance, int threshold) {
@@ -261,6 +261,7 @@ public static class GravityControlPatch {
     private static void StartPostfix(GravityControl __instance) {
         PatchesHandler.Logger.LogInfo("Started gravity control");
         GlobalGravControl = __instance;
+        InSpace = false;
         UpdateGravity(creditsUp());
         if (GravityTask == null) {
             GravityTask = Task.Run(async () => {
@@ -276,8 +277,9 @@ public static class GravityControlPatch {
     [HarmonyPrefix]
     private static bool OnTriggerEnter2DPrefix() {
         // This is a replacement for the original function, so always return false
-        InSpace = true;
-        UpdateGravity(creditsUp());
+        bool credits = creditsUp();
+        if (!credits) InSpace = true;
+        UpdateGravity(credits);
         return false;
     }
 
